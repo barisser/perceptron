@@ -16,9 +16,9 @@ randn=0
 def rand():
     a=time.time()
     global randn
-    
+
     b=hashlib.sha256(str(a)+str(randn)).hexdigest()
-    
+
     c=int(b,16)
     randn=randn+math.pow(c,0.5)
     d=float(c%1000000)
@@ -46,7 +46,7 @@ def score(outputset, onedaychangedata):
             m=m/(1+onedaychangedata[a+1])
         elif outputset[a]==2: #BUY on margin
             m=m*(1+onedaychangedata[a+1])
-        
+
         a=a+1
     return m
 
@@ -54,7 +54,7 @@ def score(outputset, onedaychangedata):
 
 
 class unit:
-    
+
 
     def __init__(self):     
         self.neurons=[]
@@ -68,7 +68,7 @@ class unit:
             #self.axons.append(rand_array(layers[i]*layers[i+1]))
             g=[0]*layers[i]*layers[i+1]
             self.axons.append(g)
-    
+
 
     def reset(self):
         self.neurons=[]
@@ -78,16 +78,16 @@ class unit:
                 r.append(0)
             self.neurons.append(r)
 
-        
+
     def run(self, inputs):
         global outs
         self.reset()
-        
+
         b=0
         while b<len(self.neurons[0]):
             self.neurons[0][b]=inputs[b]
             b=b+1
-        
+
         a=0
         while a<layern-1:
             outs=[]
@@ -105,10 +105,10 @@ class unit:
                     axonid=nn*len(self.neurons[a+1])+aa
                     axonweight=self.axons[a][axonid]
                     self.neurons[a+1][aa]=axonweight*outs[nn]
-                    
+
                     aa=aa+1
 
-                
+
                 nn=nn+1
             a=a+1
 
@@ -122,7 +122,7 @@ class unit:
                 bestn=g
             g=g+1
         return bestn
-    
+
 
     def cycle(self,inputset):
         #RUNS MANY TIMES
@@ -135,8 +135,8 @@ class unit:
 
         return outputs
 
-    
-      
+
+
 
 class system:
 
@@ -144,13 +144,13 @@ class system:
         self.units=[unit() for i in range(unit_n)]
         self.bestscore=0
         self.bestaxons=[]
-        
+
 
     def compete(self,inputs):
         r=[]
         scores=[]
         probability=[]
-        
+
         for x in self.units:
             outs=x.cycle(inputs)
             s=score(outs,btc.onedaychange)
@@ -158,9 +158,9 @@ class system:
                 self.bestscore=s
                 self.bestaxons=x.axons
                 print s
-          
+
             probability.append(math.pow(s,2))
-        
+
         a=sum(probability)
         if a==0:
             a=1
@@ -169,16 +169,16 @@ class system:
         for x in probability:
             p.append([float(x)/float(a),n])
             n=n+1
-               
+
         p.sort()
-        
-        
+
+
         return p
 
     def choosesurvivors(self,probability):
         n=len(self.units)
         survivors=[]
-            
+
         while len(survivors)<n:
             a=rand()
             b=0
@@ -193,7 +193,7 @@ class system:
             if not f==-1:
                 survivors.append(f)
         return survivors
-        
+
     def recombine(self,a,b):
         r=[]
         c=0
@@ -204,7 +204,7 @@ class system:
                 g.append(self.units[a].axons[c][d]/2+self.units[b].axons[c][d]/2)
                 d=d+1
             r.append(g)
-            
+
             c=c+1
         return r
 
@@ -248,8 +248,8 @@ class system:
             self.evolveonce(inputs)
             a=a+1
             print "generation "+str(a)
-        
-        
+
+
 
 a=system(20)
 
@@ -268,7 +268,7 @@ def init():
         r.append(btc.Xdifference[a])
         r.append(btc.Ydifference[a])
         inputset.append(r)
-        
+
         a=a+1
 
 
