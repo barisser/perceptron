@@ -12,6 +12,7 @@ layern=len(layers)
 
 randn=0
 
+
 def rand():
     a=time.time()
     global randn
@@ -23,15 +24,18 @@ def rand():
     d=float(c%1000000)
     return d/1000000
 
+
 def rand_array(n):
     r=[]
     for i in range(n):
         r.append(rand())
     return r
 
+
 def logistics(sumin):
     r=1/(1+math.pow(math.e,-1*sumin))
     return r
+
 
 def score(outputset, onedaychangedata):
     m=1
@@ -250,6 +254,7 @@ class system:
 a=system(20)
 
 inputset=[]
+
 
 def init():
     global inputset
