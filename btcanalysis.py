@@ -142,5 +142,3 @@ def correlation(x,y):
 def init():
     get_data()
     prep()
-
-
