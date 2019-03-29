@@ -6,7 +6,7 @@ import time
 import numpy as np
 import btcanalysis as btc
 
-layers=[4,10,3]
+layers=[4, 10, 3]
 
 layern=len(layers)
 
@@ -18,8 +18,8 @@ def rand():
     
     b=hashlib.sha256(str(a)+str(randn)).hexdigest()
     
-    c=int(b,16)
-    randn=randn+math.pow(c,0.5)
+    c=int(b, 16)
+    randn=randn+math.pow(c, 0.5)
     d=float(c%1000000)
     return d/1000000
 
@@ -30,7 +30,7 @@ def rand_array(n):
     return r
 
 def logistics(sumin):
-    r=1/(1+math.pow(math.e,-1*sumin))
+    r=1/(1+math.pow(math.e, -1*sumin))
     return r
 
 def score(outputset, onedaychangedata):
@@ -57,10 +57,10 @@ class unit:
         self.axons=[]
         for x in layers:
             r=[]
-            for i in range(0,x):
+            for i in range(0, x):
                 r.append(0)
             self.neurons.append(r)
-        for i in range(0,layern-1):
+        for i in range(0, layern-1):
             #self.axons.append(rand_array(layers[i]*layers[i+1]))
             g=[0]*layers[i]*layers[i+1]
             self.axons.append(g)
@@ -70,7 +70,7 @@ class unit:
         self.neurons=[]
         for x in layers:
             r=[]
-            for i in range(0,x):
+            for i in range(0, x):
                 r.append(0)
             self.neurons.append(r)
 
@@ -120,7 +120,7 @@ class unit:
         return bestn
     
 
-    def cycle(self,inputset):
+    def cycle(self, inputset):
         #RUNS MANY TIMES
         #inputset should be 2D array
         g=0
@@ -142,20 +142,20 @@ class system:
         self.bestaxons=[]
         
 
-    def compete(self,inputs):
+    def compete(self, inputs):
         r=[]
         scores=[]
         probability=[]
         
         for x in self.units:
             outs=x.cycle(inputs)
-            s=score(outs,btc.onedaychange)
+            s=score(outs, btc.onedaychange)
             if s>self.bestscore:
                 self.bestscore=s
                 self.bestaxons=x.axons
                 print s
           
-            probability.append(math.pow(s,2))
+            probability.append(math.pow(s, 2))
         
         a=sum(probability)
         if a==0:
@@ -163,7 +163,7 @@ class system:
         p=[]
         n=0
         for x in probability:
-            p.append([float(x)/float(a),n])
+            p.append([float(x)/float(a), n])
             n=n+1
                
         p.sort()
@@ -171,7 +171,7 @@ class system:
         
         return p
 
-    def choosesurvivors(self,probability):
+    def choosesurvivors(self, probability):
         n=len(self.units)
         survivors=[]
             
@@ -190,7 +190,7 @@ class system:
                 survivors.append(f)
         return survivors
         
-    def recombine(self,a,b):
+    def recombine(self, a, b):
         r=[]
         c=0
         while c<len(self.units[a].axons):
@@ -204,7 +204,7 @@ class system:
             c=c+1
         return r
 
-    def permutate(self,factor):
+    def permutate(self, factor):
         a=0
         while a<len(self.units):
             b=0
@@ -221,24 +221,24 @@ class system:
 
             a=a+1
 
-    def breednew(self,survivors):
+    def breednew(self, survivors):
         #FULL recombination
         a=0
         while a<len(survivors):
 
-            r=random.randint(0,len(survivors)-1)
-            g=self.recombine(a,r)
+            r=random.randint(0, len(survivors)-1)
+            g=self.recombine(a, r)
             self.units[a].axons=g
 
             a=a+1
 
-    def evolveonce(self,inputs):
+    def evolveonce(self, inputs):
         p=self.compete(inputs)
         survivors=self.choosesurvivors(p)
         self.permutate(0.1)
         self.breednew(survivors)
 
-    def evolve(self,inputs,generation_n):
+    def evolve(self, inputs, generation_n):
         a=0
         while a<generation_n:
             self.evolveonce(inputs)
