@@ -112,6 +112,7 @@ def average(x):
     b=b/n
     return b
 
+
 def standard_deviation(x):
     b=0
     g=average(x)
@@ -122,6 +123,7 @@ def standard_deviation(x):
     b=math.pow(b,0.5)
     return b
     
+
 def correlation(x,y):
     a=0
     b=0
