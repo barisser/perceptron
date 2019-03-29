@@ -43,7 +43,7 @@ def get_data():
     
 
 def prep():
-    global volume, price, onedaychange,Xmovingaverage, Ymovingaverage
+    global volume, price, onedaychange, Xmovingaverage, Ymovingaverage
     global Xdifference, Ydifference
     
     for x in data:
@@ -60,9 +60,9 @@ def prep():
         onedaychange.append(price[a+1]/price[a]-1)
         a=a+1
 
-    for i in range(0,Xinterval):
+    for i in range(0, Xinterval):
         Xmovingaverage.append(0)
-    for i in range(0,Yinterval):
+    for i in range(0, Yinterval):
         Ymovingaverage.append(0)
         
     a=0
@@ -85,9 +85,9 @@ def prep():
         Ymovingaverage.append(r)
         a=a+1
 
-    for i in range(0,Xinterval):
+    for i in range(0, Xinterval):
         Xdifference.append(1)
-    for i in range(0,Yinterval):
+    for i in range(0, Yinterval):
         Ydifference.append(1)
 
     g=Xinterval
@@ -116,13 +116,13 @@ def standard_deviation(x):
     b=0
     g=average(x)
     for y in x:
-        b=b+math.pow((y-g),2)
+        b=b+math.pow((y-g), 2)
 
     b=b/len(x)
-    b=math.pow(b,0.5)
+    b=math.pow(b, 0.5)
     return b
     
-def correlation(x,y):
+def correlation(x, y):
     a=0
     b=0
     ax=average(x)
